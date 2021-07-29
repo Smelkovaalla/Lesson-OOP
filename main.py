@@ -95,15 +95,17 @@ other_student.courses_in_progress += ['Python']
 
 some_reviewer = Reviewer('Peter', 'Parker')
 some_reviewer.courses_attached += ['Python']
+some_reviewer.courses_attached += ['Git']
 some_reviewer.rate_hw(some_student, 'Python', 10)
 some_reviewer.rate_hw(some_student, 'Python', 9)
 some_reviewer.rate_hw(some_student, 'Python', 10)
+some_reviewer.rate_hw(some_student, 'Git', 10)
 some_reviewer.rate_hw(other_student, 'Python', 10)
 some_reviewer.rate_hw(other_student, 'Python', 7)
 
-print(f'Оценки студенту выставлены: {some_student.grades}')
-print(f'Оценки другому студенту выставлены: {other_student.grades}')
-# print(f'Курс проверяющего: {some_reviewer.courses_attached}')
+other_reviewer = Reviewer('Sandra', 'Bullock')
+other_reviewer.courses_attached += ['Git']
+other_reviewer.rate_hw(some_student, 'Git', 7)
 
 some_lecturer = Lecturer('Some', 'Buddy')
 some_lecturer.courses_attached += ['Python']
@@ -111,23 +113,85 @@ some_student.rate_hw(some_lecturer, 'Python', 10)
 some_student.rate_hw(some_lecturer, 'Python', 9)
 
 other_lecturer = Lecturer('Bobby', 'Marley')
+other_lecturer.courses_attached += ['Python']
+some_student.rate_hw(other_lecturer, 'Python', 8)
+some_student.rate_hw(other_lecturer, 'Python', 9)
 other_lecturer.courses_attached += ['Git']
 some_student.rate_hw(other_lecturer, 'Git', 7)
 some_student.rate_hw(other_lecturer, 'Git', 9)
 
-print(f'Оценки лектору выставлены: {some_lecturer.grades}')
-print(f'Оценки другому лектору выставлены: {other_lecturer.grades}')
-
-print()
 print(some_lecturer)
+print(f'Оценки лектору выставлены: {some_lecturer.grades}')
 print()
 print(other_lecturer)
+print(f'Оценки другому лектору выставлены: {other_lecturer.grades}')
 print()
 print(some_reviewer)
+print(f'Курс проверяющего: {some_reviewer.courses_attached}')
+print()
+print(other_reviewer)
+print(f'Курс проверяющего: {other_reviewer.courses_attached}')
 print()
 print(some_student)
+print(f'Оценки студенту выставлены: {some_student.grades}')
 print()
 print(other_student)
+print(f'Оценки другому студенту выставлены: {other_student.grades}')
 print()
 print(f'Средний балл some студента меньше other студента? {some_student < other_student}')
 print(f'Средний балл some лектора меньше other лектора? {some_lecturer < other_lecturer}')
+print()
+
+students_list = []
+students_list += [some_student]
+students_list += [other_student]
+
+lecturers_list = []
+lecturers_list += [some_lecturer]
+lecturers_list += [other_lecturer]
+
+
+def middle_students_grades(students_list, course):
+    res_all = 0
+    num_all = 0
+    course = course.capitalize()
+    for student in students_list:
+        if course in student.grades.keys():
+            x = 0
+            print(f'Оценки студента {student.name} по курсу {student.grades[course]}')
+            num = 0
+            for i in student.grades[course]:
+                x += i
+                num += 1
+            res_1 = x / num
+            print(f'Средняя оценка по ДЗ {round(res_1, 2)}')
+            res_all += res_1
+            num_all += 1
+    return res_all / num_all
+
+
+course = input("Для расчета средней оценки студентов по курсу, введите название курса ")
+print(f'Средняя оценка студентов по курсу {course} {round(middle_students_grades(students_list, course), 2)}')
+
+
+def middle_lecturers_grades(lecturers_list, course):
+    res_all = 0
+    num_all = 0
+    course = course.capitalize()
+    for lecturer in lecturers_list:
+        if course in lecturer.grades.keys():
+            x = 0
+            print(f'Оценки лектора {lecturer.name} по курсу {lecturer.grades[course]}')
+            num = 0
+            for i in lecturer.grades[course]:
+                x += i
+                num += 1
+            res_1 = x / num
+            print(f'Средняя оценка за лекцию {round(res_1, 2)}')
+            res_all += res_1
+            num_all += 1
+    return res_all / num_all
+
+
+course = input("Для расчета средней оценки лекторов по курсу, введите название курса ")
+print(f'Средняя оценка лекторов по курсу {course} {round(middle_lecturers_grades(lecturers_list, course), 2)}')
